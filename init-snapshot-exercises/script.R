@@ -1,22 +1,20 @@
-# 使用 library() 加载整个包
 library(ggplot2)
 library(dplyr)
 
-# 使用加载后的函数（不需要加包名）
-data(mpg)
-mpg %>%
-  dplyr::filter(class == "compact") %>%
-  dplyr::group_by(manufacturer) %>%
-  dplyr::summarise(mean_hwy = mean(hwy)) %>%
-  print()
+# Read the iris dataset
+data(iris)
 
-# 使用 ggplot2 绘图（不加包名，因为已经 library(ggplot2)）
-ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+# Print the first 6 rows
+head(iris)
+
+# Create a scatter plot of Sepal.Length and Sepal.Width
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_point()
 
-# 使用命名空间方式调用函数（不加载包）
-plotly::ggplotly(ggplot(mpg, aes(displ, hwy)) + geom_point())
+# Perform some data analysis using dplyr
+iris %>%
+  group_by(Species) %>%
+  summarise(mean_sepal_length = mean(Sepal.Length))
 
-# 使用 readr::read_csv() 读取数据
-df <- readr::read_csv("https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv")
-print(head(df))
+# Create a linear mixed effects model with {lme4}
+lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris)
